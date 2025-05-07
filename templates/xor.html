@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XOR Cipher</title>
+</head>
+<body>
+    <h1>XOR Cipher</h1>
+    <form method="post">
+        <input type="text" name="text" placeholder="Enter text" required>
+        <input type="number" name="key" placeholder="Key (integer)" required>
+        <button type="submit">Encrypt/Decrypt</button>
+    </form>
+
+    {% if result %}
+    <h2>Result:</h2>
+    <p>{{ result }}</p>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}">Home</a>
+</body>
+</html>

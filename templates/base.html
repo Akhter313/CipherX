@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptographic Methods</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="hero">
+        <h1>Cryptographic Methods</h1>
+        <div class="methods-container">
+            <a href="{{ url_for('crypto', method='xor') }}" class="method-button">XOR Cipher</a>
+            <a href="{{ url_for('crypto', method='caesar') }}" class="method-button">Caesar Cipher</a>
+            <a href="{{ url_for('crypto', method='substitution') }}" class="method-button">Substitution Cipher</a>
+            <a href="{{ url_for('crypto', method='base64') }}" class="method-button">Base64</a>
+            <a href="{{ url_for('crypto', method='reverse') }}" class="method-button">Reverse Cipher</a>
+            <a href="{{ url_for('crypto', method='multiplicative') }}" class="method-button">Multiplicative Cipher</a>
+        </div>
+    </div>
+    <footer>
+        <p>Developed by <span class="developer-name">KAMAL AKHTER</span></p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,51 @@
+def row_column_cipher(text, key, decrypt=False):
+    n = len(key)
+    
+    # Ensure the key is unique and contains only digits
+    if len(set(key)) != n or not key.isdigit():
+        raise ValueError("Key must be a string of unique digits.")
+
+    sorted_key = sorted(key)
+    key_order = [sorted_key.index(k) for k in key]
+
+    if not decrypt:
+        # Encryption
+        # Pad text to be a multiple of n
+        padded_text = text + ' ' * ((n - len(text) % n) % n)
+        rows = [padded_text[i:i + n] for i in range(0, len(padded_text), n)]
+        
+        cipher = ''
+        for i in range(n):
+            col = ''.join([row[key_order.index(i)] for row in rows])
+            cipher += col
+        return cipher.strip()
+    else:
+        # Decryption
+        # Calculate full columns and extra characters
+        num_full_columns = len(text) // n
+        num_extra_chars = len(text) % n
+
+        sorted_key_indexed = {sorted_key[i]: i for i in range(n)}
+        order = sorted(key_order)
+        full_cols = [num_full_columns + (1 if i < num_extra_chars else 0) for i in range(n)]
+
+        # Split the text into columns
+        cols = []
+        start = 0
+        for col_length in full_cols:
+            cols.append(text[start:start + col_length])
+            start += col_length
+
+        # Reorder columns to original key order
+        original_order = [cols[order.index(i)] for i in range(n)]
+
+        # Combine columns to form rows
+        rows = [''.join(row) for row in zip(*original_order)]
+        return ''.join(rows).strip()
+
+    {% if result %}
+    <h3>Result:</h3>
+    <p>{{ result }}</p>
+    {% endif %}
+</body>
+</html>

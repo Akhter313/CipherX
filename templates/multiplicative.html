@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplicative Cipher</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="hero">
+        <h1>Multiplicative Cipher</h1>
+        <form method="POST">
+            <textarea name="text" placeholder="Enter text here..." required></textarea>
+            <input type="number" name="key" placeholder="Enter key (number)" required>
+            <select name="action">
+                <option value="encrypt">Encrypt</option>
+                <option value="decrypt">Decrypt</option>
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+        {% if result %}
+        <div class="result">
+            <h2>Result:</h2>
+            <p>{{ result }}</p>
+        </div>
+        {% endif %}
+        <a href="{{ url_for('index') }}" class="method-button">Back to Home</a>
+    </div>
+</body>
+</html>
