@@ -3,22 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cryptographic Methods</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+    <title>CipherX</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
 <body>
-    <div class="hero">
-        <h1>Cryptographic Methods</h1>
-        <div class="methods-container">
-            <a href="{{ url_for('crypto', method='xor') }}" class="method-button">XOR Cipher</a>
-            <a href="{{ url_for('crypto', method='caesar') }}" class="method-button">Caesar Cipher</a>
-            <a href="{{ url_for('crypto', method='substitution') }}" class="method-button">Substitution Cipher</a>
-            <a href="{{ url_for('crypto', method='base64') }}" class="method-button">Base64</a>
-            <a href="{{ url_for('crypto', method='reverse') }}" class="method-button">Reverse Cipher</a>
-            <a href="{{ url_for('crypto', method='multiplicative') }}" class="method-button">Multiplicative Cipher</a>
-        </div>
-    </div>
-    <footer>
-        <p>Developed by <span class="developer-name">KAMAL AKHTER</span></p>
-    </footer>
+    <main class="shell">
+        <section class="intro-panel">
+            <div class="intro-copy">
+                <p class="eyebrow">CipherX Workplace</p>
+                <h1>Transform text with classic cipher tools.</h1>
+                <p class="lead">Choose a method, enter your text, and get the result instantly.</p>
+            </div>
+        </section>
+
+        <section class="methods-section" aria-labelledby="methods-title">
+            <div class="section-heading">
+                <p class="eyebrow">Tools</p>
+                <h2 id="methods-title">Pick a cipher</h2>
+            </div>
+
+            <div class="methods-grid">
+                <a href="{{ url_for('crypto', method='xor') }}" class="method-card">
+                    <span class="method-icon">XOR</span>
+                    <strong>XOR Cipher</strong>
+                    <small>Combine text with a numeric key.</small>
+                </a>
+                <a href="{{ url_for('crypto', method='caesar') }}" class="method-card">
+                    <span class="method-icon">A-Z</span>
+                    <strong>Caesar Cipher</strong>
+                    <small>Shift letters forward through the alphabet.</small>
+                </a>
+                <a href="{{ url_for('crypto', method='rot13') }}" class="method-card">
+                    <span class="method-icon">13</span>
+                    <strong>ROT13</strong>
+                    <small>Apply the classic fixed Caesar shift.</small>
+                </a>
+                <a href="{{ url_for('crypto', method='substitution') }}" class="method-card">
+                    <span class="method-icon">SUB</span>
+                    <strong>Substitution</strong>
+                    <small>Use a keyed shift substitution.</small>
+                </a>
+                <a href="{{ url_for('crypto', method='base64') }}" class="method-card">
+                    <span class="method-icon">64</span>
+                    <strong>Base64</strong>
+                    <small>Encode or decode Base64 payloads.</small>
+                </a>
+                <a href="{{ url_for('crypto', method='reverse') }}" class="method-card">
+                    <span class="method-icon">REV</span>
+                    <strong>Reverse</strong>
+                    <small>Flip the text order instantly.</small>
+                </a>
+                <a href="{{ url_for('crypto', method='multiplicative') }}" class="method-card">
+                    <span class="method-icon">MOD</span>
+                    <strong>Multiplicative</strong>
+                    <small>Encrypt or decrypt with modular math.</small>
+                </a>
+                <a href="{{ url_for('crypto', method='binary') }}" class="method-card">
+                    <span class="method-icon">01</span>
+                    <strong>Binary</strong>
+                    <small>Convert text to 8-bit binary and back.</small>
+                </a>
+                <a href="{{ url_for('crypto', method='hex') }}" class="method-card">
+                    <span class="method-icon">HEX</span>
+                    <strong>Hex</strong>
+                    <small>Move between text and hexadecimal.</small>
+                </a>
+                <a href="{{ url_for('crypto', method='bruteforce') }}" class="method-card">
+                    <span class="method-icon">26x</span>
+                    <strong>Bruteforce</strong>
+                    <small>List every Caesar shift at once.</small>
+                </a>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

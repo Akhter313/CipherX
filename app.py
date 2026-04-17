@@ -33,6 +33,11 @@ def substitution_cipher(text, key):
     return caesar_cipher(text, key)
 
 
+def shift_cipher(text, key, action):
+    shift = -key if action == 'decrypt' else key
+    return caesar_cipher(text, shift)
+
+
 def base64_encode(text):
     return base64.b64encode(text.encode()).decode()
 
@@ -157,13 +162,13 @@ def crypto(method):
             result = "Key is required" if key is None else xor_cipher(text, key)
 
         elif method == 'caesar':
-            result = "Key is required" if key is None else caesar_cipher(text, key)
+            result = "Key is required" if key is None else shift_cipher(text, key, action)
 
         elif method == 'rot13':
             result = rot13_cipher(text)
 
         elif method == 'substitution':
-            result = "Key is required" if key is None else substitution_cipher(text, key)
+            result = "Key is required" if key is None else shift_cipher(text, key, action)
 
         elif method == 'base64':
             result = base64_encode(text) if action == 'encode' else base64_decode(text)

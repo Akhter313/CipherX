@@ -3,47 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ method | upper }}</title>
+    <title>{{ method | upper }} | CipherX</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 
-<div class="container">
-    <h1>{{ method | upper }} Cipher</h1>
+<main class="shell shell-narrow">
+    <a class="back-link" href="{{ url_for('index') }}">Back to tools</a>
 
-    <form method="POST">
-        <input type="text" name="text" placeholder="Enter text" required>
+    <section class="tool-panel">
+        <div class="section-heading">
+            <p class="eyebrow">CipherX Tool</p>
+            <h1>{{ method | upper }}{% if method not in ['base64', 'binary', 'hex', 'bruteforce'] %} Cipher{% endif %}</h1>
+        </div>
 
-        {% if method not in ['reverse', 'rot13', 'bruteforce'] %}
-        <input type="number" name="key" placeholder="Key">
+        <form method="POST" class="cipher-form">
+            <label for="text">Text</label>
+            <textarea id="text" name="text" placeholder="Enter your message or encoded value" required rows="4"></textarea>
+
+            {% if method in ['xor', 'caesar', 'substitution'] %}
+            <label for="action">Action</label>
+            <select id="action" name="action">
+                <option value="encrypt">Encrypt</option>
+                <option value="decrypt">Decrypt</option>
+            </select>
+            {% endif %}
+
+            {% if method not in ['reverse', 'rot13', 'bruteforce', 'base64', 'binary', 'hex'] %}
+            <label for="key">Numeric key</label>
+            <input id="key" type="number" name="key" placeholder="Example: 3">
+            {% endif %}
+
+            {% if method in ['base64', 'binary', 'hex'] %}
+            <label for="action">Action</label>
+            <select id="action" name="action">
+                <option value="encode">Encode</option>
+                <option value="decode">Decode</option>
+            </select>
+            {% endif %}
+
+            {% if method == 'multiplicative' %}
+            <label for="action">Action</label>
+            <select id="action" name="action">
+                <option value="encrypt">Encrypt</option>
+                <option value="decrypt">Decrypt</option>
+            </select>
+            {% endif %}
+
+            <button type="submit">Run cipher</button>
+        </form>
+
+        {% if result %}
+        <section class="result-box" aria-live="polite">
+            <span>Result</span>
+            <pre>{{ result }}</pre>
+        </section>
         {% endif %}
-
-        {% if method in ['base64', 'binary', 'hex'] %}
-        <select name="action">
-            <option value="encode">Encode</option>
-            <option value="decode">Decode</option>
-        </select>
-        {% endif %}
-
-        {% if method == 'multiplicative' %}
-        <select name="action">
-            <option value="encrypt">Encrypt</option>
-            <option value="decrypt">Decrypt</option>
-        </select>
-        {% endif %}
-
-        <button type="submit">Run</button>
-    </form>
-
-    {% if result %}
-    <div class="result-box">
-        > {{ result }}
-    </div>
-    {% endif %}
-
-    <br>
-    <a href="{{ url_for('index') }}">← Back</a>
-</div>
+    </section>
+</main>
 
 </body>
 </html>
