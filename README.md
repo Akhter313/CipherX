@@ -1,5 +1,13 @@
 # CipherX
 
+
+<img width="1920" height="994" alt="Screenshot From 2026-04-17 16-57-40" src="https://github.com/user-attachments/assets/44e6d845-d069-4b68-b3ea-78924a1af28a" />
+<br>
+<img width="1920" height="991" alt="Screenshot From 2026-04-17 16-59-19" src="https://github.com/user-attachments/assets/5e9d871d-0fed-4201-9d86-da109375f5a5" />
+
+
+## Overview
+
 CipherX is a Flask based web app I built as a cybersecurity student to practice classical cryptography concepts in a simple, hands-on way. It brings common cipher and encoding methods into one place, so text can be encrypted, decrypted, encoded, decoded, or tested without switching between different tools.
 
 ## Features
@@ -82,9 +90,6 @@ The actions depend on the method:
 
 This project is mainly for understanding the basics behind classical ciphers, key based transformations, encoding formats, and brute force testing. It is useful for practicing how plaintext changes under different methods and how weak classical ciphers can be reversed.
 
-## Notes
-
-CipherX is made for learning and experimentation. Classical ciphers are important for understanding cryptography history and basic security concepts, but they should not be used to protect real sensitive data.
 
 ## Author
 
