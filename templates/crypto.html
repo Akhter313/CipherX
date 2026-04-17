@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ method | upper }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>{{ method | upper }} Cipher</h1>
+
+    <form method="POST">
+        <input type="text" name="text" placeholder="Enter text" required>
+
+        {% if method not in ['reverse', 'rot13', 'bruteforce'] %}
+        <input type="number" name="key" placeholder="Key">
+        {% endif %}
+
+        {% if method in ['base64', 'binary', 'hex'] %}
+        <select name="action">
+            <option value="encode">Encode</option>
+            <option value="decode">Decode</option>
+        </select>
+        {% endif %}
+
+        {% if method == 'multiplicative' %}
+        <select name="action">
+            <option value="encrypt">Encrypt</option>
+            <option value="decrypt">Decrypt</option>
+        </select>
+        {% endif %}
+
+        <button type="submit">Run</button>
+    </form>
+
+    {% if result %}
+    <div class="result-box">
+        > {{ result }}
+    </div>
+    {% endif %}
+
+    <br>
+    <a href="{{ url_for('index') }}">← Back</a>
+</div>
+
+</body>
+</html>
