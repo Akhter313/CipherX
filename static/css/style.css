@@ -1,70 +1,132 @@
-/* Global Styles */
+/* -------------------------
+   Global Terminal Theme
+------------------------- */
 body {
-    background-color: #1e1e1e;  /* Dark background */
-    color: #00ff00;  /* Neon green text */
-    font-family: 'Courier New', Courier, monospace;  /* Monospaced font for hacker theme */
+    background: radial-gradient(circle at center, #000000, #020202 80%);
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
     margin: 0;
     padding: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
-/* Hero Section */
-.hero {
-    text-align: center;
-    padding: 20px;
+/* -------------------------
+   Main Container
+------------------------- */
+.container {
+    width: 80%;
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid #00ff00;
+    box-shadow: 0 0 20px #00ff00;
 }
 
-/* Title Styling */
+/* -------------------------
+   Title
+------------------------- */
 h1 {
-    font-size: 3rem;
+    text-align: center;
+    font-size: 2.5rem;
+    text-shadow: 0 0 10px #00ff00;
     margin-bottom: 30px;
-    color: #00ff00;
-    text-transform: uppercase;
 }
 
-/* Methods Container */
-.methods-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Button Styling */
-.method-button {
-    background: #333;
+/* -------------------------
+   Links (methods)
+------------------------- */
+a {
     color: #00ff00;
-    padding: 15px 25px;
-    margin: 10px 0;
     text-decoration: none;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    width: 250px;  /* Fixed button width */
-    text-align: center;
-    transition: background 0.3s ease;
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);  /* Glow effect */
+    margin: 5px 10px;
+    display: inline-block;
 }
 
-/* Hover Effect */
-.method-button:hover {
-    background: #555;
-    box-shadow: 0 0 25px rgba(0, 255, 0, 0.7);  /* Glow effect on hover */
+a:hover {
+    text-shadow: 0 0 10px #00ff00;
 }
 
-/* Footer Styling */
-footer {
-    position: absolute;
-    bottom: 10px;
-    width: 100%;
-    text-align: center;
+/* -------------------------
+   Inputs
+------------------------- */
+input, select {
+    background: black;
+    border: 1px solid #00ff00;
     color: #00ff00;
-    font-size: 1rem;
+    padding: 10px;
+    margin: 5px;
+    width: 200px;
+    outline: none;
 }
 
-.developer-name {
-    font-weight: bold;
+input::placeholder {
+    color: #00aa00;
+}
+
+/* -------------------------
+   Buttons
+------------------------- */
+button {
+    background: black;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 5px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #00ff00;
+    color: black;
+    box-shadow: 0 0 10px #00ff00;
+}
+
+/* -------------------------
+   Result Box
+------------------------- */
+.result-box {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #00ff00;
+    background: #000;
+    white-space: pre-wrap; /* important for bruteforce output */
+    word-wrap: break-word;
+}
+
+/* -------------------------
+   Terminal Prompt Style
+------------------------- */
+.prompt {
+    color: #00ff00;
+    margin-bottom: 10px;
+}
+
+/* -------------------------
+   Footer
+------------------------- */
+footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.9rem;
+    color: #00aa00;
+}
+
+/* -------------------------
+   Typing Animation (Optional)
+------------------------- */
+.typing {
+    overflow: hidden;
+    border-right: 2px solid #00ff00;
+    white-space: nowrap;
+    animation: typing 3s steps(40, end), blink 0.7s infinite;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink {
+    50% { border-color: transparent }
 }
