@@ -29,7 +29,7 @@ def rot13_cipher(text):
 
 
 def substitution_cipher(text, key):
-    # This is kept as a shift-based substitution variant for compatibility with your current UI.
+    # Kept as a shift-based substitution variant for compatibility with the UI.
     return caesar_cipher(text, key)
 
 
@@ -154,31 +154,19 @@ def crypto(method):
         action = request.form.get('action', '')
 
         if method == 'xor':
-            if key is None:
-                result = "Key is required"
-            else:
-                result = xor_cipher(text, key)
+            result = "Key is required" if key is None else xor_cipher(text, key)
 
         elif method == 'caesar':
-            if key is None:
-                result = "Key is required"
-            else:
-                result = caesar_cipher(text, key)
+            result = "Key is required" if key is None else caesar_cipher(text, key)
 
         elif method == 'rot13':
             result = rot13_cipher(text)
 
         elif method == 'substitution':
-            if key is None:
-                result = "Key is required"
-            else:
-                result = substitution_cipher(text, key)
+            result = "Key is required" if key is None else substitution_cipher(text, key)
 
         elif method == 'base64':
-            if action == 'encode':
-                result = base64_encode(text)
-            else:
-                result = base64_decode(text)
+            result = base64_encode(text) if action == 'encode' else base64_decode(text)
 
         elif method == 'reverse':
             result = reverse_cipher(text)
@@ -187,27 +175,18 @@ def crypto(method):
             if key is None:
                 result = "Key is required"
             else:
-                if action == 'encrypt':
-                    result = multiplicative_encrypt(text, key)
-                else:
-                    result = multiplicative_decrypt(text, key)
+                result = multiplicative_encrypt(text, key) if action == 'encrypt' else multiplicative_decrypt(text, key)
 
         elif method == 'binary':
-            if action == 'encode':
-                result = binary_encode(text)
-            else:
-                result = binary_decode(text)
+            result = binary_encode(text) if action == 'encode' else binary_decode(text)
 
         elif method == 'hex':
-            if action == 'encode':
-                result = hex_encode(text)
-            else:
-                result = hex_decode(text)
+            result = hex_encode(text) if action == 'encode' else hex_decode(text)
 
         elif method == 'bruteforce':
             result = caesar_bruteforce(text)
 
-    return render_template(f'{method}.html', result=result)
+    return render_template('crypto.html', result=result, method=method)
 
 
 if __name__ == "__main__":
