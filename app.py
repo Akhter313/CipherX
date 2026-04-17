@@ -1,41 +1,41 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, abort
 import base64
 import math
 
 app = Flask(__name__)
 
-# -------------------------
-# XOR Cipher
-# -------------------------
-def xor_cipher(text, key):
-    key = key % 256  # normalize key
-    return ''.join(chr(ord(c) ^ key) for c in text)
 
 # -------------------------
-# Caesar Cipher
+# Core cipher helpers
 # -------------------------
+def xor_cipher(text, key):
+    key = key % 256
+    return ''.join(chr(ord(c) ^ key) for c in text)
+
+
 def caesar_cipher(text, shift):
-    result = ""
+    result = []
     for char in text:
         if char.isalpha():
             base = 65 if char.isupper() else 97
-            result += chr((ord(char) - base + shift) % 26 + base)
+            result.append(chr((ord(char) - base + shift) % 26 + base))
         else:
-            result += char
-    return result
+            result.append(char)
+    return ''.join(result)
 
-# -------------------------
-# Substitution Cipher (still shift-based, renamed logic)
-# -------------------------
+
+def rot13_cipher(text):
+    return caesar_cipher(text, 13)
+
+
 def substitution_cipher(text, key):
-    # same as Caesar but kept for UI separation
+    # This is kept as a shift-based substitution variant for compatibility with your current UI.
     return caesar_cipher(text, key)
 
-# -------------------------
-# Base64 Encode/Decode
-# -------------------------
+
 def base64_encode(text):
     return base64.b64encode(text.encode()).decode()
+
 
 def base64_decode(text):
     try:
@@ -43,48 +43,89 @@ def base64_decode(text):
     except Exception:
         return "Invalid Base64 input"
 
-# -------------------------
-# Reverse Cipher
-# -------------------------
+
 def reverse_cipher(text):
     return text[::-1]
 
-# -------------------------
-# Multiplicative Cipher
-# -------------------------
-def multiplicative_encrypt(text, key):
-    if math.gcd(key, 26) != 1:
-        return "Invalid key (must be coprime with 26)"
-    
-    result = ""
-    for char in text:
-        if char.isalpha():
-            base = 65 if char.isupper() else 97
-            result += chr(((ord(char) - base) * key) % 26 + base)
-        else:
-            result += char
-    return result
 
-def multiplicative_decrypt(text, key):
-    mod_inv = modinv(key, 26)
-    
-    if mod_inv is None:
-        return "Invalid key (no modular inverse exists for mod 26)"
-    
-    result = ""
-    for char in text:
-        if char.isalpha():
-            base = 65 if char.isupper() else 97
-            result += chr(((ord(char) - base) * mod_inv) % 26 + base)
-        else:
-            result += char
-    return result
+def binary_encode(text):
+    return ' '.join(format(ord(c), '08b') for c in text)
 
+
+def binary_decode(text):
+    try:
+        parts = text.split()
+        if not parts:
+            return "Invalid binary input"
+
+        chars = []
+        for part in parts:
+            if len(part) != 8 or any(ch not in "01" for ch in part):
+                return "Invalid binary input"
+            chars.append(chr(int(part, 2)))
+
+        return ''.join(chars)
+    except Exception:
+        return "Invalid binary input"
+
+
+def hex_encode(text):
+    return text.encode().hex()
+
+
+def hex_decode(text):
+    try:
+        return bytes.fromhex(text).decode()
+    except Exception:
+        return "Invalid hex input"
+
+
+def caesar_bruteforce(text):
+    lines = []
+    for shift in range(26):
+        lines.append(f"Shift {shift}: {caesar_cipher(text, shift)}")
+    return "\n".join(lines)
+
+
+# -------------------------
+# Multiplicative cipher
+# -------------------------
 def modinv(a, m):
     for x in range(1, m):
         if (a * x) % m == 1:
             return x
     return None
+
+
+def multiplicative_encrypt(text, key):
+    if math.gcd(key, 26) != 1:
+        return "Invalid key (must be coprime with 26)"
+
+    result = []
+    for char in text:
+        if char.isalpha():
+            base = 65 if char.isupper() else 97
+            result.append(chr(((ord(char) - base) * key) % 26 + base))
+        else:
+            result.append(char)
+    return ''.join(result)
+
+
+def multiplicative_decrypt(text, key):
+    mod_inv = modinv(key, 26)
+
+    if mod_inv is None:
+        return "Invalid key (no modular inverse exists for mod 26)"
+
+    result = []
+    for char in text:
+        if char.isalpha():
+            base = 65 if char.isupper() else 97
+            result.append(chr(((ord(char) - base) * mod_inv) % 26 + base))
+        else:
+            result.append(char)
+    return ''.join(result)
+
 
 # -------------------------
 # Routes
@@ -93,30 +134,47 @@ def modinv(a, m):
 def index():
     return render_template('base.html')
 
+
 @app.route('/crypto/<method>', methods=['GET', 'POST'])
 def crypto(method):
+    supported_methods = {
+        'xor', 'caesar', 'rot13', 'substitution',
+        'base64', 'reverse', 'multiplicative',
+        'binary', 'hex', 'bruteforce'
+    }
+
+    if method not in supported_methods:
+        abort(404)
+
     result = ''
-    
+
     if request.method == 'POST':
         text = request.form.get('text', '')
         key = request.form.get('key', type=int)
-
-        # Validation
-        if method not in ['reverse', 'base64'] and (key is None):
-            result = "Key is required"
-            return render_template(f'{method}.html', result=result)
+        action = request.form.get('action', '')
 
         if method == 'xor':
-            result = xor_cipher(text, key)
+            if key is None:
+                result = "Key is required"
+            else:
+                result = xor_cipher(text, key)
 
         elif method == 'caesar':
-            result = caesar_cipher(text, key)
+            if key is None:
+                result = "Key is required"
+            else:
+                result = caesar_cipher(text, key)
+
+        elif method == 'rot13':
+            result = rot13_cipher(text)
 
         elif method == 'substitution':
-            result = substitution_cipher(text, key)
+            if key is None:
+                result = "Key is required"
+            else:
+                result = substitution_cipher(text, key)
 
         elif method == 'base64':
-            action = request.form.get('action')
             if action == 'encode':
                 result = base64_encode(text)
             else:
@@ -126,16 +184,31 @@ def crypto(method):
             result = reverse_cipher(text)
 
         elif method == 'multiplicative':
-            action = request.form.get('action')
-            if action == 'encrypt':
-                result = multiplicative_encrypt(text, key)
+            if key is None:
+                result = "Key is required"
             else:
-                result = multiplicative_decrypt(text, key)
+                if action == 'encrypt':
+                    result = multiplicative_encrypt(text, key)
+                else:
+                    result = multiplicative_decrypt(text, key)
+
+        elif method == 'binary':
+            if action == 'encode':
+                result = binary_encode(text)
+            else:
+                result = binary_decode(text)
+
+        elif method == 'hex':
+            if action == 'encode':
+                result = hex_encode(text)
+            else:
+                result = hex_decode(text)
+
+        elif method == 'bruteforce':
+            result = caesar_bruteforce(text)
 
     return render_template(f'{method}.html', result=result)
 
-# -------------------------
-# Run App
-# -------------------------
+
 if __name__ == "__main__":
     app.run(debug=True)
